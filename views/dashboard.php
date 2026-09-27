@@ -10,19 +10,19 @@ include __DIR__ . '/partials/navbar.php';
         <div class="col s12 m4">
             <div class="card-panel accent-color white-text">
                 <p>Balance Neto</p>
-                <h5>$<?= number_format($data['balance'], 0, ",", ".") ?></h5>
+                <h5>$<?= number_format((float)($data['balance'] ?? 0), 0, ",", ".") ?></h5>
             </div>
         </div>
         <div class="col s12 m4">
             <div class="card-panel secondary-color white-text">
                 <p>Ingresos</p>
-                <h5>$<?= number_format($data['incomes'], 0, ",", ".") ?></h5>
+                <h5>$<?= number_format((float)($data['incomes'] ?? 0), 0, ",", ".") ?></h5>
             </div>
         </div>
         <div class="col s12 m4">
             <div class="card-panel error-color white-text">
                 <p>Gastos</p>
-                <h5>$<?= number_format($data['expenses'], 0, ",", ".") ?></h5>
+                <h5>$<?= number_format((float)($data['expenses'] ?? 0), 0, ",", ".") ?></h5>
             </div>
         </div>
     </div>
