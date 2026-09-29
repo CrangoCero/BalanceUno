@@ -46,22 +46,22 @@ include __DIR__ . '/partials/navbar.php';
             <tbody>
                 <?php foreach ($expenses as $expense): ?>
                     <tr>
-                        <td style="font-weight: 500;"><?= date('d/m/Y', strtotime($expense['date'])) ?></td>
-                        <td><?= htmlspecialchars($expense['description']) ?></td>
+                        <td style="font-weight: 500;"><?= !empty($expense['date']) ? date('d/m/Y', strtotime($expense['date'])) : '-' ?></td>
+                        <td><?= htmlspecialchars($expense['description'] ?? '') ?></td>
                         <td>
                             <span class="grey-text text-darken-1" style="font-size: 0.9rem;">
-                                <?= isset($categoriesMap[$expense['category_id']]) ? htmlspecialchars($categoriesMap[$expense['category_id']]) : '-' ?>
+                                <?= isset($expense['category_id'], $categoriesMap[$expense['category_id']]) ? htmlspecialchars($categoriesMap[$expense['category_id']]) : '-' ?>
                             </span>
                         </td>
                         <td class="right-align error-color-text" style="font-weight: 600;">
-                            $<?= number_format($expense['amount'], 0, ",", ".") ?>
+                            $<?= number_format((float)($expense['amount'] ?? 0), 0, ",", ".") ?>
                         </td>
                         <td>
                             <span class="badge grey lighten-3 black-text" style="float: none; border-radius: 4px;">
-                                <?= htmlspecialchars($expense['payment_method']) ?>
+                                <?= htmlspecialchars($expense['payment_method'] ?? 'Efectivo') ?>
                             </span>
                         </td>
-                        <td class="grey-text"><?= $expense['payment_method'] === 'Efectivo' ? '-' : htmlspecialchars($expense['code']) ?></td>
+                        <td class="grey-text"><?= ($expense['payment_method'] ?? '') === 'Efectivo' ? '-' : htmlspecialchars($expense['code'] ?? '-') ?></td>
                         <td>
                             <?php if (($expense['payment_status'] ?? 'Pagado') === 'Pagado'): ?>
                                 <span class="badge green white-text" style="float: none; border-radius: 4px; padding: 2px 6px;">Pagado</span>
@@ -71,14 +71,14 @@ include __DIR__ . '/partials/navbar.php';
                         </td>
                         <td class="center-align">
                             <a href="<?= !empty($expense['loan_id']) ? '#modalEditLoanPayment' : '#modalEditExpense' ?>" class="btn-flat waves-effect modal-trigger edit-expense-btn" style="color: var(--info);"
-                                data-id="<?= $expense['id'] ?>"
-                                data-date="<?= date('d/m/Y', strtotime($expense['date'])) ?>"
-                                data-description="<?= htmlspecialchars($expense['description']) ?>"
-                                data-amount="<?= htmlspecialchars($expense['amount']) ?>"
-                                data-payment_method="<?= htmlspecialchars($expense['payment_method']) ?>"
-                                data-code="<?= htmlspecialchars($expense['code']) ?>"
-                                data-loan_id="<?= $expense['loan_id'] ?? '' ?>"
-                                data-category_id="<?= htmlspecialchars($expense['category_id'] ?? '') ?>"
+                                data-id="<?= (int)$expense['id'] ?>"
+                                data-date="<?= !empty($expense['date']) ? date('d/m/Y', strtotime($expense['date'])) : '' ?>"
+                                data-description="<?= htmlspecialchars($expense['description'] ?? '') ?>"
+                                data-amount="<?= htmlspecialchars((string)($expense['amount'] ?? 0)) ?>"
+                                data-payment_method="<?= htmlspecialchars($expense['payment_method'] ?? 'Efectivo') ?>"
+                                data-code="<?= htmlspecialchars($expense['code'] ?? '') ?>"
+                                data-loan_id="<?= htmlspecialchars((string)($expense['loan_id'] ?? '')) ?>"
+                                data-category_id="<?= htmlspecialchars((string)($expense['category_id'] ?? '')) ?>"
                                 data-payment_status="<?= htmlspecialchars($expense['payment_status'] ?? 'Pagado') ?>">
                                 <i class="material-icons">edit</i>
                             </a>
@@ -281,7 +281,7 @@ include __DIR__ . '/partials/navbar.php';
         <form method="POST" action="?action=updateExpense">
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
             <input type="hidden" name="id">
-            
+
             <div class="input-field">
                 <input type="hidden" name="loan_id" id="edit_loan_id_hidden">
                 <select id="modal_edit_loan_id" required>
@@ -300,7 +300,7 @@ include __DIR__ . '/partials/navbar.php';
                 <input type="text" name="amount" required>
                 <label class="active">Monto (COP)</label>
             </div>
-            
+
             <!-- Hidden que sí se envía -->
             <input type="hidden" name="payment_method" id="edit_loan_payment_method_hidden">
             <div class="input-field">
