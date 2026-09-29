@@ -45,22 +45,22 @@ include __DIR__ . '/partials/navbar.php';
             <tbody>
                 <?php foreach ($incomes as $income): ?>
                     <tr>
-                        <td style="font-weight: 500;"><?= date('d/m/Y', strtotime($income['date'])) ?></td>
-                        <td><?= htmlspecialchars($income['description']) ?></td>
+                        <td style="font-weight: 500;"><?= !empty($income['date']) ? date('d/m/Y', strtotime($income['date'])) : '-' ?></td>
+                        <td><?= htmlspecialchars($income['description'] ?? '') ?></td>
                         <td>
                             <span class="grey-text text-darken-1" style="font-size: 0.9rem;">
-                                <?= isset($categoriesMap[$income['category_id']]) ? htmlspecialchars($categoriesMap[$income['category_id']]) : '-' ?>
+                                <?= isset($income['category_id'], $categoriesMap[$income['category_id']]) ? htmlspecialchars($categoriesMap[$income['category_id']]) : '-' ?>
                             </span>
                         </td>
                         <td class="right-align accent-color-text" style="font-weight: 600;">
-                            $<?= number_format($income['amount'], 0, ",", ".") ?>
+                            $<?= number_format((float)($income['amount'] ?? 0), 0, ",", ".") ?>
                         </td>
                         <td>
                             <span class="badge grey lighten-3 black-text" style="float: none; border-radius: 4px;">
-                                <?= htmlspecialchars($income['payment_method']) ?>
+                                <?= htmlspecialchars($income['payment_method'] ?? 'Efectivo') ?>
                             </span>
                         </td>
-                        <td class="grey-text"><?= $income['payment_method'] === 'Efectivo' ? '-' : htmlspecialchars($income['code']) ?></td>
+                        <td class="grey-text"><?= ($income['payment_method'] ?? '') === 'Efectivo' ? '-' : htmlspecialchars($income['code'] ?? '-') ?></td>
                         <td>
                             <?php if (($income['payment_status'] ?? 'Pagado') === 'Pagado'): ?>
                                 <span class="badge green white-text" style="float: none; border-radius: 4px; padding: 2px 6px;">Pagado</span>
@@ -70,13 +70,13 @@ include __DIR__ . '/partials/navbar.php';
                         </td>
                         <td class="center-align">
                             <a href="#modalEditIncome" class="btn-flat waves-effect modal-trigger edit-income-btn" style="color: var(--info);"
-                                data-id="<?= $income['id'] ?>"
-                                data-date="<?= date('d/m/Y', strtotime($income['date'])) ?>"
-                                data-description="<?= htmlspecialchars($income['description']) ?>"
-                                data-amount="<?= htmlspecialchars($income['amount']) ?>"
-                                data-payment_method="<?= htmlspecialchars($income['payment_method']) ?>"
-                                data-code="<?= htmlspecialchars($income['code']) ?>"
-                                data-category_id="<?= htmlspecialchars($income['category_id'] ?? '') ?>"
+                                data-id="<?= (int)$income['id'] ?>"
+                                data-date="<?= !empty($income['date']) ? date('d/m/Y', strtotime($income['date'])) : '' ?>"
+                                data-description="<?= htmlspecialchars($income['description'] ?? '') ?>"
+                                data-amount="<?= htmlspecialchars((string)($income['amount'] ?? 0)) ?>"
+                                data-payment_method="<?= htmlspecialchars($income['payment_method'] ?? 'Efectivo') ?>"
+                                data-code="<?= htmlspecialchars($income['code'] ?? '') ?>"
+                                data-category_id="<?= htmlspecialchars((string)($income['category_id'] ?? '')) ?>"
                                 data-payment_status="<?= htmlspecialchars($income['payment_status'] ?? 'Pagado') ?>">
                                 <i class="material-icons">edit</i>
                             </a>
