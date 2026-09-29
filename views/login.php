@@ -26,7 +26,7 @@
 
             <?php if (isset($error)): ?>
                 <div class="card-panel red lighten-4 red-text text-darken-4">
-                    <?= $error ?>
+                    <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
                 </div>
             <?php endif; ?>
 
