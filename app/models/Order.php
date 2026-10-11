@@ -13,13 +13,13 @@ class Order extends BaseModel
     }
 
     // Listar todos los pedidos
-    public function getAll()
+    public function getAll(): array
     {
         $stmt = $this->db->prepare(
             "SELECT * FROM orders WHERE company_id = :company_id AND deleted_at IS NULL ORDER BY created_at DESC"
         );
         $stmt->execute([':company_id' => $this->getCompanyId()]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
 
     // Obtener pedido con sus detalles
@@ -50,7 +50,12 @@ class Order extends BaseModel
         }
 
         $companyId = $this->getCompanyId();
-        $this->db->beginTransaction();
+
+        // Control de transacciones anidadas
+        $alreadyInTransaction = $this->db->inTransaction();
+        if (!$alreadyInTransaction) {
+            $this->db->beginTransaction();
+        }
 
         try {
             // Generar número de pedido único para la empresa
@@ -159,10 +164,15 @@ class Order extends BaseModel
                 $this->registerFinancialIncome($orderId, $orderNumber, $total, $data['customer_name'] ?? 'Cliente General');
             }
 
-            $this->db->commit();
+            if (!$alreadyInTransaction) {
+                $this->db->commit();
+            }
+
             return $orderId;
         } catch (Exception $e) {
-            $this->db->rollBack();
+            if (!$alreadyInTransaction && $this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
             throw $e;
         }
     }
@@ -181,7 +191,12 @@ class Order extends BaseModel
         }
 
         $companyId = $this->getCompanyId();
-        $this->db->beginTransaction();
+
+        // Control de transacciones anidadas
+        $alreadyInTransaction = $this->db->inTransaction();
+        if (!$alreadyInTransaction) {
+            $this->db->beginTransaction();
+        }
 
         try {
             $productModel = new Product($this->db);
@@ -232,10 +247,15 @@ class Order extends BaseModel
                 ':company_id' => $companyId
             ]);
 
-            $this->db->commit();
+            if (!$alreadyInTransaction) {
+                $this->db->commit();
+            }
+
             return true;
         } catch (Exception $e) {
-            $this->db->rollBack();
+            if (!$alreadyInTransaction && $this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
             throw $e;
         }
     }
@@ -270,7 +290,7 @@ class Order extends BaseModel
             ':payment_method' => 'Efectivo',
             ':category_id'    => $categoryId,
             ':payment_status' => 'Pagado',
-            ':code'           => 'PED-' . $orderId // Guardamos la referencia del pedido en el campo código para poder revertirlo
+            ':code'           => 'PED-' . $orderId // Referencia para poder revertirlo
         ]);
     }
 

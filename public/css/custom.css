@@ -1,14 +1,22 @@
 :root {
   /* Color Palette - Premium & Modern */
-  --primary: #0f172a; /* Deep Slate */
+  --primary: #0f172a;
+  /* Deep Slate */
   --primary-light: #1e293b;
-  --secondary: #6366f1; /* Indigo */
-  --accent: #10b981; /* Emerald */
-  --error: #ef4444; /* Rose */
-  --warning: #f59e0b; /* Amber */
-  --info: #3b82f6; /* Blue */
-  --loans: #8b5cf6; /* Violet */
-  --bg-app: #f8fafc; /* Soft Gray */
+  --secondary: #6366f1;
+  /* Indigo */
+  --accent: #10b981;
+  /* Emerald */
+  --error: #ef4444;
+  /* Rose */
+  --warning: #f59e0b;
+  /* Amber */
+  --info: #3b82f6;
+  /* Blue */
+  --loans: #8b5cf6;
+  /* Violet */
+  --bg-app: #f8fafc;
+  /* Soft Gray */
   --text-main: #1e293b;
   --text-muted: #64748b;
   --white: #ffffff;
@@ -53,7 +61,6 @@ body.container {
 /* --- Navigation --- */
 nav {
   height: auto !important;
-  line-height: normal !important;
   box-shadow: var(--shadow-md) !important;
 }
 
@@ -113,10 +120,7 @@ nav {
 }
 
 .title-app i {
-  font-size: 32px;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 0 8px;
-  border-radius: 12px;
+  font-size: 32px !important;
 }
 
 .title-app h3 {
@@ -183,10 +187,10 @@ th {
   padding: 15px !important;
 }
 
-td {
+/* td {
   padding: 15px !important;
   font-size: 0.95rem;
-}
+} */
 
 /* --- Buttons --- */
 .btn,
@@ -222,18 +226,23 @@ td {
 .primary-color {
   background-color: var(--primary) !important;
 }
+
 .secondary-color {
   background-color: var(--secondary) !important;
 }
+
 .error-color {
   background-color: var(--error) !important;
 }
+
 .accent-color {
   background-color: var(--accent) !important;
 }
+
 .reports-color {
   background-color: var(--info) !important;
 }
+
 .loans-color {
   background-color: var(--loans) !important;
 }
@@ -241,30 +250,36 @@ td {
 .primary-color-text {
   color: var(--primary) !important;
 }
+
 .secondary-color-text {
   color: var(--secondary) !important;
 }
+
 .error-color-text {
   color: var(--error) !important;
 }
+
 .accent-color-text {
   color: var(--accent) !important;
 }
+
 .reports-color-text {
   color: var(--info) !important;
 }
+
 .loans-color-text {
   color: var(--loans) !important;
 }
 
 /* --- DataTables Responsive Custom Styles --- */
-table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control::before,
-table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control::before {
+table.dataTable.dtr-inline.collapsed>tbody>tr>td.dtr-control::before,
+table.dataTable.dtr-inline.collapsed>tbody>tr>th.dtr-control::before {
   background-color: var(--secondary) !important;
   border: none !important;
   box-shadow: var(--shadow-sm) !important;
   font-family: "Material Icons";
-  content: "\e145" !important; /* add icon */
+  content: "\e145" !important;
+  /* add icon */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -274,16 +289,11 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control::before {
   border-radius: 4px;
 }
 
-table.dataTable.dtr-inline.collapsed
-  > tbody
-  > tr.parent
-  > td.dtr-control::before,
-table.dataTable.dtr-inline.collapsed
-  > tbody
-  > tr.parent
-  > th.dtr-control::before {
+table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td.dtr-control::before,
+table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th.dtr-control::before {
   background-color: var(--error) !important;
-  content: "\e15b" !important; /* remove icon */
+  content: "\e15b" !important;
+  /* remove icon */
 }
 
 /* Fix for horizontal scroll on small screens */
@@ -314,15 +324,19 @@ table.dataTable.dtr-inline.collapsed
   .nav-app {
     padding: 10px 15px !important;
   }
+
   .app-name {
     font-size: 1.3rem;
   }
+
   .logo-img {
     height: 35px;
   }
+
   .dashboard-box {
     padding: 15px;
   }
+
   .action-btn {
     width: 100%;
     margin: 5px 0;
@@ -333,6 +347,7 @@ table.dataTable.dtr-inline.collapsed
     text-align: left !important;
     margin-top: 10px;
   }
+
   .dataTables_filter input {
     width: 100% !important;
     margin-left: 0 !important;
@@ -381,12 +396,13 @@ table.dataTable.dtr-inline.collapsed
 @media only screen and (max-width: 600px) {
   .modal {
     width: 100% !important;
-    height: 100% !important;
+    /* height: 100% !important; */
     top: 0 !important;
     margin: 0 !important;
     border-radius: 0 !important;
-    max-height: 100% !important;
+    /* max-height: 100% !important; */
   }
+
   .modal:not(.datepicker-modal) .modal-content {
     overflow-y: auto !important;
     padding: 20px !important;

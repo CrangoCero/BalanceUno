@@ -5,13 +5,7 @@
   "require": {},
   "autoload": {
     "psr-4": {
-      "App\\": "app/",
-      "App\\Config\\": "app/config/",
-      "App\\Controllers\\": "app/controllers/",
-      "App\\Models\\": "app/models/",
-      "App\\Views\\": "app/views/",
-      "App\\Router\\": "app/router/",
-      "App\\Utils\\": "app/utils/"
+      "App\\": "app/"
     }
   }
 }

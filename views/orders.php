@@ -62,7 +62,7 @@ include __DIR__ . '/partials/navbar.php';
                                 data-id="<?= $order['id'] ?>">
                                 <i class="material-icons">visibility</i>
                             </a>
-                            
+
                             <?php if ($order['status'] === 'Borrador'): ?>
                                 <a href="#!" class="btn-flat waves-effect btn-change-order-status" style="color: var(--secondary);"
                                     data-id="<?= $order['id'] ?>" data-status="Confirmado" title="Confirmar Pedido">
@@ -94,7 +94,7 @@ include __DIR__ . '/partials/navbar.php';
                             <?php endif; ?>
                         </td>
                     </tr>
-                    
+
                     <!-- Modal Eliminar Pedido -->
                     <?php if ($order['status'] === 'Borrador'): ?>
                         <div id="modalDeleteOrder<?= $order['id'] ?>" class="modal">
@@ -120,14 +120,14 @@ include __DIR__ . '/partials/navbar.php';
 </section>
 
 <!-- Modal Crear Pedido -->
-<div id="modalCreateOrder" class="modal modal-fixed-footer" style="width: 80% !important; max-height: 85% !important;">
+<div id="modalCreateOrder" class="modal modal-fixed-footer">
     <form method="POST" action="?action=createOrder" id="formCreateOrder">
         <div class="modal-content">
             <h5 class="blue-text" style="font-weight: 600;"><i class="material-icons left">shopping_cart</i> Registrar Nuevo Pedido</h5>
             <p class="grey-text" style="margin-bottom: 25px;">Agrega productos y cantidades para generar la orden</p>
-            
+
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-            
+
             <div class="row">
                 <div class="input-field col s12 m6">
                     <input type="text" name="customer_name" id="order_cust_name" required value="Cliente General">
@@ -215,7 +215,7 @@ include __DIR__ . '/partials/navbar.php';
 </div>
 
 <!-- Modal Ver Detalles del Pedido -->
-<div id="modalViewOrderDetails" class="modal modal-fixed-footer" style="width: 75% !important; max-height: 80% !important;">
+<div id="modalViewOrderDetails" class="modal modal-fixed-footer">
     <div class="modal-content">
         <div class="row">
             <div class="col s12 m6">
@@ -227,7 +227,7 @@ include __DIR__ . '/partials/navbar.php';
                 <span id="detailsOrderStatusBadge" class="badge" style="float: none; font-size: 1rem; border-radius: 4px; padding: 4px 10px; color: white;">-</span>
             </div>
         </div>
-        
+
         <table class="striped highlight" style="margin-top: 25px;">
             <thead>
                 <tr>

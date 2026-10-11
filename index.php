@@ -1,3 +1,3 @@
 <?php
-header("Location: /balanceUno/public/index.php");
+header("Location: /balanceuno/public/index.php");
 exit;

@@ -7,6 +7,9 @@ $navColor = "teal";
 
 include __DIR__ . '/partials/header.php';
 include __DIR__ . '/partials/navbar.php';
+
+$products = $products ?? [];
+$lowStockProducts = $lowStockProducts ?? [];
 ?>
 
 <section id="main" class="container">
@@ -20,7 +23,7 @@ include __DIR__ . '/partials/navbar.php';
                     <p style="margin: 5px 0 0 0; font-size: 0.9rem;">
                         Los siguientes productos tienen existencias iguales o inferiores al stock mínimo:
                         <strong>
-                            <?php 
+                            <?php
                             $lowNames = array_map(fn($p) => htmlspecialchars($p['name']) . ' (' . $p['current_stock'] . ')', $lowStockProducts);
                             echo implode(', ', $lowNames);
                             ?>
@@ -190,6 +193,11 @@ include __DIR__ . '/partials/navbar.php';
                 <label class="active">Descripción (Opcional)</label>
             </div>
             <div class="input-field">
+                <input type="number" name="current_stock" required>
+                <label for="create_prod_stock">Stock Inicial</label>
+            </div>
+
+            <div class="input-field">
                 <input type="number" name="min_stock" min="0" required>
                 <label class="active">Stock Mínimo</label>
             </div>
@@ -252,11 +260,11 @@ include __DIR__ . '/partials/navbar.php';
 </div>
 
 <!-- Modal Ver Historial de Movimientos -->
-<div id="modalViewMovements" class="modal modal-fixed-footer" style="width: 75% !important; max-height: 80% !important;">
+<div id="modalViewMovements" class="modal modal-fixed-footer">
     <div class="modal-content">
         <h5 class="orange-text"><i class="material-icons left">history</i> Historial de Movimientos: <span id="movementsProductName" class="black-text" style="font-weight: 600;">-</span></h5>
         <p class="grey-text">Registro de todas las entradas y salidas de este producto</p>
-        
+
         <table id="movementsHistoryTable" class="highlight display nowrap" style="width:100%; margin-top:20px;">
             <thead>
                 <tr>

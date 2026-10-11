@@ -572,6 +572,7 @@ $(document).ready(function () {
     .not("#modalEditIncome form")
     .not("#modalEditExpense form")
     .not("#modalEditLoanPayment form")
+    .not("#formCreateOrder") //
     .on("submit", function (e) {
       e.preventDefault();
       handleAjaxSubmit($(this));
@@ -640,6 +641,10 @@ $(document).ready(function () {
     const url = $form.attr("action");
     const formData = $form.serialize();
 
+    // Deshabilitar botón para evitar envíos múltiples por clic repetido
+    const $submitBtn = $form.find('button[type="submit"]');
+    $submitBtn.prop("disabled", true);
+
     // Mostrar cargando
     Swal.fire({
       title: "Procesando...",
@@ -669,6 +674,7 @@ $(document).ready(function () {
             location.reload();
           });
         } else {
+          $submitBtn.prop("disabled", false); // Recomponer en caso de error
           Swal.fire({
             icon: "error",
             title: "Error",
@@ -677,6 +683,7 @@ $(document).ready(function () {
         }
       },
       error: function (xhr) {
+        $submitBtn.prop("disabled", false); // Recomponer en caso de error
         let errorMsg = "No se pudo comunicar con el servidor";
         if (xhr.responseJSON && xhr.responseJSON.message) {
           errorMsg = xhr.responseJSON.message;

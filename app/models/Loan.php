@@ -11,8 +11,8 @@ class Loan extends BaseModel
         parent::__construct($db, 'loans');
     }
 
-    // Listar todos los préstamos con sus pagos (Personalizado)
-    public function getAll()
+    // Listar todos los préstamos con sus pagos (Se agrega : array para cumplir con BaseModel)
+    public function getAll(): array
     {
         $stmt = $this->db->prepare("SELECT l.id, l.loan, l.amount, l.date, l.payment_method, l.code, l.status,
                COALESCE(SUM(e.amount), 0) AS pagado,
@@ -27,7 +27,7 @@ class Loan extends BaseModel
             ':company_id' => $this->getCompanyId(),
             ':company_id2' => $this->getCompanyId()
         ]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
 
     // Crear préstamo
@@ -114,7 +114,7 @@ class Loan extends BaseModel
         return $result;
     }
 
-    public function softDelete($id)
+    public function softDelete($id): bool
     {
         $companyId = $this->getCompanyId();
 

@@ -90,7 +90,11 @@ class Product extends BaseModel
             throw new Exception("La cantidad debe ser mayor que cero.");
         }
 
-        $this->db->beginTransaction();
+        // Verificar si ya existe una transacción activa iniciada externamente
+        $alreadyInTransaction = $this->db->inTransaction();
+        if (!$alreadyInTransaction) {
+            $this->db->beginTransaction();
+        }
 
         try {
             // Calcular nuevo stock
@@ -119,10 +123,16 @@ class Product extends BaseModel
             // Registrar movimiento de stock
             $this->logStockMovement($productId, $type, $quantity, $referenceType, $referenceId, $notes);
 
-            $this->db->commit();
+            // Confirmar transacción solo si fue iniciada por este método
+            if (!$alreadyInTransaction) {
+                $this->db->commit();
+            }
             return true;
         } catch (Exception $e) {
-            $this->db->rollBack();
+            // Revertir transacción solo si fue iniciada por este método
+            if (!$alreadyInTransaction && $this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
             throw $e;
         }
     }

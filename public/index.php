@@ -10,6 +10,10 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+//Dispar errores de PHP para desarrollo (desactivar en producción)
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 // Configuración e inicio seguro de sesión
 if (session_status() === PHP_SESSION_NONE) {
     // Proteger cookies de sesión contra accesos desde scripts cliente (mitigación XSS)
