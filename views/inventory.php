@@ -8,8 +8,9 @@ $navColor = "teal";
 include __DIR__ . '/partials/header.php';
 include __DIR__ . '/partials/navbar.php';
 
-$products = $products ?? [];
-$lowStockProducts = $lowStockProducts ?? [];
+if (!isset($products)) {
+    $products = [];
+}
 ?>
 
 <section id="main" class="container">
@@ -192,11 +193,6 @@ $lowStockProducts = $lowStockProducts ?? [];
                 <textarea name="description" class="materialize-textarea"></textarea>
                 <label class="active">Descripción (Opcional)</label>
             </div>
-            <div class="input-field">
-                <input type="number" name="current_stock" required>
-                <label for="create_prod_stock">Stock Inicial</label>
-            </div>
-
             <div class="input-field">
                 <input type="number" name="min_stock" min="0" required>
                 <label class="active">Stock Mínimo</label>

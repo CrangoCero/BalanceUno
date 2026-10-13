@@ -7,13 +7,13 @@ use Exception;
 
 class Product extends BaseModel
 {
-    public function __construct($db)
+    public function __construct(PDO $db)
     {
         parent::__construct($db, 'products');
     }
 
     // Crear producto
-    public function create($data)
+    public function create(array $data): bool
     {
         $companyId = $this->getCompanyId();
 
@@ -43,7 +43,7 @@ class Product extends BaseModel
     }
 
     // Actualizar producto
-    public function update($id, $data)
+    public function update(int $id, array $data): bool
     {
         $stmt = $this->db->prepare(
             "UPDATE products 
@@ -78,7 +78,7 @@ class Product extends BaseModel
     }
 
     // Ajustar stock (incrementar / decrementar) y registrar movimiento
-    public function adjustStock($productId, $quantity, $type, $referenceType = 'ajuste', $referenceId = null, $notes = '')
+    public function adjustStock(int $productId, int $quantity, string $type, string $referenceType = 'ajuste', ?int $referenceId = null, string $notes = '')
     {
         $product = $this->findById($productId);
         if (!$product) {
@@ -138,7 +138,7 @@ class Product extends BaseModel
     }
 
     // Helper interno para loguear movimiento de stock
-    private function logStockMovement($productId, $type, $quantity, $referenceType, $referenceId, $notes)
+    private function logStockMovement(int $productId, string $type, int $quantity, string $referenceType, ?int $referenceId, string $notes)
     {
         $stmt = $this->db->prepare(
             "INSERT INTO stock_movements (company_id, product_id, type, quantity, reference_type, reference_id, notes)

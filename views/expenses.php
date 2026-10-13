@@ -7,6 +7,11 @@ $navColor = "error-color";
 
 include __DIR__ . '/partials/header.php';
 include __DIR__ . '/partials/navbar.php';
+
+$expenses = $expenses ?? [];
+$loans = $loans ?? [];
+$categories = $categories ?? [];
+$categoriesMap = $categoriesMap ?? [];
 ?>
 
 <section id="main" class="container">

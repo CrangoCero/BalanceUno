@@ -3,12 +3,13 @@
 namespace App\Controllers;
 
 use App\Models\Category;
+use PDO;
 
 class CategoriesController
 {
-    private $model;
+    private Category $model;
 
-    public function __construct($db)
+    public function __construct(PDO $db)
     {
         $this->model = new Category($db);
     }
@@ -18,7 +19,7 @@ class CategoriesController
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
     }
 
-    private function respondError($message)
+    private function respondError(string $message): void
     {
         if ($this->isAjax()) {
             echo json_encode(['success' => false, 'message' => $message]);
@@ -38,7 +39,7 @@ class CategoriesController
         include __DIR__ . '/../../views/categories.php';
     }
 
-    public function create($data)
+    public function create(array $data)
     {
         if (empty($data['name'])) {
             $this->respondError('El nombre de la categoría es obligatorio.');
@@ -55,7 +56,7 @@ class CategoriesController
         exit;
     }
 
-    public function update($id, $data)
+    public function update(int|string $id, array $data)
     {
         if (empty($data['name'])) {
             $this->respondError('El nombre de la categoría es obligatorio.');
@@ -72,7 +73,7 @@ class CategoriesController
         exit;
     }
 
-    public function delete($id)
+    public function delete(int|string $id)
     {
         $this->model->softDelete($id);
 

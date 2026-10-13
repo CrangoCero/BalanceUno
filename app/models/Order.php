@@ -7,7 +7,7 @@ use Exception;
 
 class Order extends BaseModel
 {
-    public function __construct($db)
+    public function __construct(PDO $db)
     {
         parent::__construct($db, 'orders');
     }
@@ -23,7 +23,7 @@ class Order extends BaseModel
     }
 
     // Obtener pedido con sus detalles
-    public function getWithItems($id)
+    public function getWithItems(int $id)
     {
         $order = $this->findById($id);
         if (!$order) {
@@ -43,7 +43,7 @@ class Order extends BaseModel
     }
 
     // Crear pedido
-    public function create($data, $items)
+    public function create(array $data, array $items): bool
     {
         if (empty($items)) {
             throw new Exception("El pedido debe contener al menos un producto.");
@@ -178,7 +178,7 @@ class Order extends BaseModel
     }
 
     // Actualizar estado del pedido (Máquina de estados de existencias y finanzas)
-    public function updateStatus($id, $newStatus)
+    public function updateStatus(int $id, string $newStatus)
     {
         $order = $this->getWithItems($id);
         if (!$order) {
@@ -261,7 +261,7 @@ class Order extends BaseModel
     }
 
     // Helper para generar consecutivo único de pedido por empresa
-    private function generateOrderNumber($companyId)
+    private function generateOrderNumber(int $companyId): string
     {
         $stmt = $this->db->prepare("SELECT COUNT(*) FROM orders WHERE company_id = :company_id");
         $stmt->execute([':company_id' => $companyId]);
@@ -270,7 +270,7 @@ class Order extends BaseModel
     }
 
     // Helper para registrar ingreso financiero por pedido
-    private function registerFinancialIncome($orderId, $orderNumber, $total, $customerName)
+    private function registerFinancialIncome(int $orderId, string $orderNumber, float $total, string $customerName)
     {
         // Obtener una categoría de ingreso predeterminada o la primera disponible para ventas
         $stmtCat = $this->db->prepare("SELECT id FROM categories WHERE company_id = :company_id AND (type = 'ingreso' OR type = 'ambos') AND deleted_at IS NULL LIMIT 1");
@@ -295,7 +295,7 @@ class Order extends BaseModel
     }
 
     // Helper para revertir ingreso financiero por pedido
-    private function revertFinancialIncome($orderId)
+    private function revertFinancialIncome(int $orderId)
     {
         $stmt = $this->db->prepare(
             "UPDATE incomes 

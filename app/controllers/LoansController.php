@@ -4,13 +4,14 @@ namespace App\Controllers;
 
 use App\Models\Loan;
 use App\Models\Expense;
+use PDO;
 
 class LoansController
 {
-    private $model;
-    private $expenseModel;
+    private Loan $model;
+    private Expense $expenseModel;
 
-    public function __construct($db)
+    public function __construct(PDO $db)
     {
         $this->model = new Loan($db);
         $this->expenseModel = new Expense($db);
@@ -29,7 +30,7 @@ class LoansController
     }
 
     // Obtener historial de pagos por AJAX
-    public function getPayments($id)
+    public function getPayments(?int $id)
     {
         if (!$this->isAjax()) {
             header("Location: ?action=loans");
@@ -49,7 +50,7 @@ class LoansController
     }
 
     // Crear gasto
-    public function create($data)
+    public function create(array $data)
     {
         $data['loan'] = $this->generateLoanCode();
         $data['description'] = "Préstamo " . $data['loan'];
@@ -86,7 +87,7 @@ class LoansController
 
 
     // Editar gasto
-    public function update($id, $data)
+    public function update(int $id, array $data)
     {
         $existing = $this->model->findById($id);
 
@@ -121,7 +122,7 @@ class LoansController
     }
 
     // Eliminar gasto (soft delete)
-    public function delete($id)
+    public function delete(int $id)
     {
         $this->model->softDelete($id);
 

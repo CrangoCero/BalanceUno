@@ -5,6 +5,23 @@ $pageTitle = "Balance";
 $pageIcon = "assessment";
 $navColor = "accent-color";
 
+$data = $data ?? [
+    'netBalance' => 0,
+    'totalIncomes' => 0,
+    'totalExpenses' => 0,
+    'paymentSummary' => [
+        'Ingresos' => [],
+        'Gastos' => [],
+    ],
+    'incomes' => [],
+    'expenses' => [],
+];
+
+$filters = $filters ?? [
+    'startDate' => date('d/m/Y'),
+    'endDate' => date('d/m/Y'),
+];
+
 include __DIR__ . '/partials/header.php';
 include __DIR__ . '/partials/navbar.php';
 ?>

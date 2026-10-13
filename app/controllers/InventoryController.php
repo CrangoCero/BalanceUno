@@ -4,13 +4,14 @@ namespace App\Controllers;
 
 use App\Models\Product;
 use App\Models\StockMovement;
+use PDO;
 
 class InventoryController
 {
-    private $model;
-    private $db;
+    private Product $model;
+    private PDO $db;
 
-    public function __construct($db)
+    public function __construct(PDO $db)
     {
         $this->db = $db;
         $this->model = new Product($db);
@@ -21,7 +22,7 @@ class InventoryController
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
     }
 
-    private function respondError($message)
+    private function respondError(string $message): void
     {
         if ($this->isAjax()) {
             echo json_encode(['success' => false, 'message' => $message]);
@@ -39,7 +40,7 @@ class InventoryController
         include __DIR__ . '/../../views/inventory.php';
     }
 
-    public function create($data)
+    public function create(array $data)
     {
         if (empty($data['name'])) {
             $this->respondError('El nombre del producto es obligatorio.');
@@ -65,7 +66,7 @@ class InventoryController
         exit;
     }
 
-    public function update($id, $data)
+    public function update(int|string $id, array $data)
     {
         if (empty($data['name'])) {
             $this->respondError('El nombre del producto es obligatorio.');
@@ -91,7 +92,7 @@ class InventoryController
         exit;
     }
 
-    public function delete($id)
+    public function delete(int|string $id)
     {
         $this->model->softDelete($id);
 
@@ -104,7 +105,7 @@ class InventoryController
         exit;
     }
 
-    public function adjustStock($data)
+    public function adjustStock(array $data)
     {
         $productId = $data['product_id'] ?? null;
         $quantity = $data['quantity'] ?? 0;
@@ -129,7 +130,7 @@ class InventoryController
         exit;
     }
 
-    public function getMovements($productId)
+    public function getMovements(int|string $productId)
     {
         if (!$this->isAjax()) {
             header("Location: ?action=inventory");

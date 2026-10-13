@@ -6,13 +6,13 @@ use PDO;
 
 class Category extends BaseModel
 {
-    public function __construct($db)
+    public function __construct(PDO $db)
     {
         parent::__construct($db, 'categories');
     }
 
     // Listar categorías filtradas por tipo e inquilino
-    public function getByType($type)
+    public function getByType(string $type)
     {
         $stmt = $this->db->prepare(
             "SELECT * FROM categories 
@@ -29,7 +29,7 @@ class Category extends BaseModel
     }
 
     // Crear categoría
-    public function create($data)
+    public function create(array $data): bool
     {
         $stmt = $this->db->prepare(
             "INSERT INTO categories (company_id, name, type) 
@@ -43,7 +43,7 @@ class Category extends BaseModel
     }
 
     // Actualizar categoría
-    public function update($id, $data)
+    public function update(int $id, array $data): bool
     {
         $stmt = $this->db->prepare(
             "UPDATE categories 

@@ -6,13 +6,13 @@ use PDO;
 
 class StockMovement extends BaseModel
 {
-    public function __construct($db)
+    public function __construct(PDO $db)
     {
         parent::__construct($db, 'stock_movements');
     }
 
     // Obtener movimientos de stock por producto (filtrando inquilino)
-    public function getByProduct($productId)
+    public function getByProduct(int $productId): array
     {
         $stmt = $this->db->prepare(
             "SELECT sm.*, p.name AS product_name 

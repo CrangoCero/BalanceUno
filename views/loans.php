@@ -34,6 +34,7 @@ include __DIR__ . '/partials/navbar.php';
                 </tr>
             </thead>
             <tbody>
+                <?php $loans = $loans ?? []; ?>
                 <?php foreach ($loans as $loan): ?>
                     <tr>
                         <td style="font-weight: 600; color: var(--primary);"><?= htmlspecialchars($loan['loan']) ?></td>

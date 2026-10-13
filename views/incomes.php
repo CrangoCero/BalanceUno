@@ -6,6 +6,13 @@ $pageIcon = "trending_up";
 
 include __DIR__ . '/partials/header.php';
 include __DIR__ . '/partials/navbar.php';
+
+$categoriesMap = [];
+foreach (($categories ?? []) as $category) {
+    if (isset($category['id'], $category['name'])) {
+        $categoriesMap[$category['id']] = $category['name'];
+    }
+}
 ?>
 
 <section id="main" class="container">
@@ -43,7 +50,7 @@ include __DIR__ . '/partials/navbar.php';
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($incomes as $income): ?>
+                <?php foreach (($incomes ?? []) as $income): ?>
                     <tr>
                         <td style="font-weight: 500;"><?= !empty($income['date']) ? date('d/m/Y', strtotime($income['date'])) : '-' ?></td>
                         <td><?= htmlspecialchars($income['description'] ?? '') ?></td>
@@ -126,7 +133,7 @@ include __DIR__ . '/partials/navbar.php';
             <div class="input-field">
                 <select name="category_id">
                     <option value="" selected>Ninguna</option>
-                    <?php foreach ($categories as $cat): ?>
+                    <?php foreach (($categories ?? []) as $cat): ?>
                         <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name']) ?></option>
                     <?php endforeach; ?>
                 </select>
@@ -221,7 +228,7 @@ include __DIR__ . '/partials/navbar.php';
             <div class="input-field">
                 <select name="category_id" id="edit_income_category_id">
                     <option value="">Ninguna</option>
-                    <?php foreach ($categories as $cat): ?>
+                    <?php foreach (($categories ?? []) as $cat): ?>
                         <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name']) ?></option>
                     <?php endforeach; ?>
                 </select>

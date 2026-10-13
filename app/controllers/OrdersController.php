@@ -4,13 +4,14 @@ namespace App\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
+use PDO;
 
 class OrdersController
 {
-    private $model;
-    private $db;
+    private Order $model;
+    private PDO $db;
 
-    public function __construct($db)
+    public function __construct(PDO $db)
     {
         $this->db = $db;
         $this->model = new Order($db);
@@ -21,7 +22,7 @@ class OrdersController
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
     }
 
-    private function respondError($message)
+    private function respondError(string $message): void
     {
         if ($this->isAjax()) {
             echo json_encode(['success' => false, 'message' => $message]);
@@ -44,7 +45,7 @@ class OrdersController
     }
 
     // Crear pedido
-    public function create($data)
+    public function create(array $data)
     {
         $customerName = $data['customer_name'] ?? 'Cliente General';
         $status = $data['status'] ?? 'Borrador';
@@ -86,7 +87,7 @@ class OrdersController
     }
 
     // Cambiar estado del pedido
-    public function updateStatus($data)
+    public function updateStatus(array $data): void
     {
         $id = $data['id'] ?? null;
         $status = $data['status'] ?? '';
@@ -110,7 +111,7 @@ class OrdersController
     }
 
     // Obtener detalles del pedido por AJAX
-    public function getItems($id)
+    public function getItems(int $id)
     {
         if (!$this->isAjax()) {
             header("Location: ?action=orders");
@@ -130,7 +131,7 @@ class OrdersController
     }
 
     // Eliminar pedido (solo Borrador)
-    public function delete($id)
+    public function delete(int $id)
     {
         $order = $this->model->findById($id);
         if (!$order) {

@@ -3,13 +3,14 @@
 namespace App\Controllers;
 
 use App\Models\Balance;
+use PDO;
 use DateTime;
 
 class BalanceController
 {
-    private $model;
+    private Balance $model;
 
-    public function __construct($db)
+    public function __construct(PDO $db)
     {
         $this->model = new Balance($db);
     }

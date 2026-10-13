@@ -31,7 +31,7 @@ include __DIR__ . '/partials/navbar.php';
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($categories as $category): ?>
+                <?php foreach (($categories ?? []) as $category): ?>
                     <tr>
                         <td style="font-weight: 500;"><?= htmlspecialchars($category['name']) ?></td>
                         <td>

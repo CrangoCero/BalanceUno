@@ -6,12 +6,12 @@ use PDO;
 
 class Balance extends BaseModel
 {
-    public function __construct($db)
+    public function __construct(PDO $db)
     {
         parent::__construct($db, 'incomes'); // Usa incomes como tabla principal heredada
     }
 
-    public function getData($startDate, $endDate)
+    public function getData(string $startDate, string $endDate): array
     {
         $companyId = $this->getCompanyId();
 

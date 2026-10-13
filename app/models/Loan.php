@@ -6,7 +6,7 @@ use PDO;
 
 class Loan extends BaseModel
 {
-    public function __construct($db)
+    public function __construct(PDO $db)
     {
         parent::__construct($db, 'loans');
     }
@@ -31,7 +31,7 @@ class Loan extends BaseModel
     }
 
     // Crear préstamo
-    public function create($data)
+    public function create(array $data): bool
     {
         $description = $data['description'];
         $companyId = $this->getCompanyId();
@@ -66,7 +66,7 @@ class Loan extends BaseModel
     }
 
     // Actualizar préstamo
-    public function update($id, $data)
+    public function update(int $id, array $data): bool
     {
         $companyId = $this->getCompanyId();
 
@@ -139,7 +139,7 @@ class Loan extends BaseModel
         return $result;
     }
 
-    private function updateLoanStatus($loanId)
+    private function updateLoanStatus(int $loanId)
     {
         $companyId = $this->getCompanyId();
 
@@ -160,7 +160,7 @@ class Loan extends BaseModel
         $stmt->execute([':status' => $nuevoEstado, ':loan_id' => $loanId, ':company_id' => $companyId]);
     }
 
-    public function loanPayment($data)
+    public function loanPayment(array $data): bool
     {
         $stmt = $this->db->prepare("INSERT INTO expenses (company_id, date, description, amount, payment_method, code, loan_id) 
         VALUES (:company_id, :date, :description, :amount, :payment_method, :code, :loan_id)");

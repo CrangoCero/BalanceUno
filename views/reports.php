@@ -5,6 +5,12 @@ $pageTitle = "Reportes";
 $pageIcon = "bar_chart";
 $navColor = "reports-color";
 
+$data = $data ?? [];
+$data['incomes'] = $data['incomes'] ?? [];
+$data['expenses'] = $data['expenses'] ?? [];
+$data['totals'] = $data['totals'] ?? [];
+$data['paymentSummary'] = $data['paymentSummary'] ?? [];
+
 $extraStyles = '<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>';
 
 include __DIR__ . '/partials/header.php';

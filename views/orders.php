@@ -38,7 +38,7 @@ include __DIR__ . '/partials/navbar.php';
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($orders as $order): ?>
+                <?php foreach (($orders ?? []) as $order): ?>
                     <tr>
                         <td style="font-weight: 600;"><?= htmlspecialchars($order['order_number']) ?></td>
                         <td style="font-weight: 500;"><?= htmlspecialchars($order['customer_name']) ?></td>
@@ -161,7 +161,7 @@ include __DIR__ . '/partials/navbar.php';
                             <td>
                                 <select name="products_ids[]" class="browser-default select-order-product" required style="display: block; width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 5px;">
                                     <option value="" disabled selected>Selecciona un producto</option>
-                                    <?php foreach ($products as $p): ?>
+                                    <?php foreach (($products ?? []) as $p): ?>
                                         <option value="<?= $p['id'] ?>" data-price="<?= $p['sale_price'] ?>" data-stock="<?= $p['current_stock'] ?>">
                                             <?= htmlspecialchars($p['name']) ?> (Stock: <?= $p['current_stock'] ?> | Price: $<?= number_format($p['sale_price'], 0, ",", ".") ?>)
                                         </option>

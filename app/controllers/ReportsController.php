@@ -4,17 +4,18 @@ namespace App\Controllers;
 
 use App\Models\Report;
 use DateTime;
+use PDO;
 
 class ReportsController
 {
-    private $report;
+    private Report $report;
 
-    public function __construct($db)
+    public function __construct(PDO $db)
     {
         $this->report = new Report($db);
     }
 
-    public function index($filters = [])
+    public function index(array $filters = [])
     {
         $startDateInput = $_POST['startDate'] ?? null;
         $endDateInput   = $_POST['endDate'] ?? null;
@@ -44,7 +45,7 @@ class ReportsController
         include  __DIR__ . '/../../views/reports.php';
     }
 
-    public function exportXls($filters)
+    public function exportXls(array $filters)
     {
         $startDate = $filters['startDate'] ?? date('Y-m-01');
         $endDate   = $filters['endDate'] ?? date('Y-m-t');
